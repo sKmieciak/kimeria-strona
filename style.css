@@ -1,7 +1,7 @@
 :root{
   --ink:#211D18; --paper:#F5EFE3; --surface:#FFFDF6; --muted:#6E6555;
   --stroke:rgba(33,29,24,.18); --shadow:rgba(33,29,24,.18);
-  --accent:#211D18; --accent-tint:rgba(33,29,24,.08);
+  --accent:var(--ink); --accent-tint:color-mix(in srgb,var(--ink) 8%,transparent);
   --dobitka:#2E7D4F; --agro:#707B2E; --wykon:#2C5F8A;
   color-scheme:light;
 }
