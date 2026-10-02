@@ -5,6 +5,9 @@ const root = path.join(__dirname, '..');
 const MAIL = 'seb.kmieciak@gmail.com';
 const PUBLISHER = 'Kmieciak Sebastian - SK Software';
 const UPDATED = '2 października 2026';
+// Własna domena (bez https://), np. 'kimeria.pl'. Pusta = brak pliku CNAME/sitemap.
+const DOMAIN = '';
+const ORIGIN = DOMAIN ? `https://${DOMAIN}` : '';
 
 const MARK = '<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><polygon points="32,8 56,32 32,56 8,32" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><polygon points="32,8 11.2,44 52.8,44" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2.5"/></svg>';
 const ICONS = {
@@ -14,13 +17,14 @@ const ICONS = {
 };
 const mail = `<a href="mailto:${MAIL}">${MAIL}</a>`;
 
-const page = ({ title, desc, rel, bodyClass = '', content }) => `<!doctype html>
+const page = ({ title, desc, rel, bodyClass = '', content, canonical }) => `<!doctype html>
 <html lang="pl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
-<meta name="description" content="${desc}">
+<meta name="description" content="${desc}">${ORIGIN && canonical !== undefined ? `
+<link rel="canonical" href="${ORIGIN}/${canonical}">` : ''}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=Baloo+2:wght@700&display=swap">
 <link rel="stylesheet" href="${rel}style.css">
@@ -38,7 +42,7 @@ ${content}
 
 const apps = [
   {
-    slug: 'dobitka', cls: 'app-dobitka', name: 'Dobitka',
+    slug: 'dobitka', play: '', cls: 'app-dobitka', name: 'Dobitka',
     blurb: 'Piłkarska gra towarzyska. Odejmujecie gole wylosowanych zawodników i próbujecie zejść dokładnie do zera.',
     summary: [
       'Rozgrywka (gracze, wyniki rund, ustawienia meczu) zostaje <strong>tylko na Twoim urządzeniu</strong>. Nie ma konta, logowania ani własnego serwera.',
@@ -56,7 +60,7 @@ const apps = [
 <section><h2>Zmiany tej polityki</h2><p>Jeśli zakres funkcji aplikacji się zmieni, zaktualizujemy tę stronę i datę na górze dokumentu.</p></section>`,
   },
   {
-    slug: 'agrobilans', cls: 'app-agro', name: 'AgroBilans',
+    slug: 'agrobilans', play: '', cls: 'app-agro', name: 'AgroBilans',
     blurb: 'Rachunkowość gospodarstwa warzywnego: pola, uprawy, zbiory, sprzedaż, koszty i kontrahenci.',
     summary: [
       'Dane gospodarstwa zostają <strong>na Twoim telefonie</strong>.',
@@ -86,7 +90,7 @@ const apps = [
 <section><h2>Zmiany tej polityki</h2><p>Jeśli zmienimy sposób przetwarzania danych, np. wprowadzając reklamy, synchronizację w chmurze lub analitykę, zaktualizujemy ten dokument i datę na górze przed wprowadzeniem zmiany do aplikacji.</p></section>`,
   },
   {
-    slug: 'wykonbilans', cls: 'app-wykon', name: 'WykonBilans',
+    slug: 'wykonbilans', play: '', cls: 'app-wykon', name: 'WykonBilans',
     blurb: 'Dla ekip wykończeniowych: wyceny, cennik materiałów, rzuty pomieszczeń i rozliczenia zleceń.',
     summary: [
       'Klienci, zlecenia, wyceny, cennik, koszty, płatności i rzuty pomieszczeń zostają <strong>tylko na Twoim telefonie</strong>.',
@@ -117,6 +121,7 @@ write('index.html', page({
   title: 'Kimeria',
   desc: 'Kimeria: polskie aplikacje mobilne Dobitka, AgroBilans i WykonBilans.',
   rel: '',
+  canonical: '',
   content: `
 <section class="hero">
   <h1>Kimeria</h1>
@@ -127,7 +132,7 @@ ${apps.map(a => `  <article class="card app ${a.cls}">
     <span class="icon">${ICONS[a.slug]}</span>
     <h2>${a.name}</h2>
     <p>${a.blurb}</p>
-    <div class="links"><a class="pill" href="${a.slug}/prywatnosc/">Polityka prywatności</a><span class="pill muted">Google Play: wkrótce</span></div>
+    <div class="links"><a class="pill" href="${a.slug}/prywatnosc/">Polityka prywatności</a>${a.play ? `<a class="pill" href="${a.play}" rel="noopener">Google Play</a>` : '<span class="pill muted">Google Play: wkrótce</span>'}</div>
   </article>`).join('\n')}
 </div>
 <section class="section" id="kontakt">
@@ -146,6 +151,7 @@ for (const a of apps) {
     desc: `Polityka prywatności aplikacji ${a.name}.`,
     rel: '../../',
     bodyClass: a.cls,
+    canonical: `${a.slug}/prywatnosc/`,
     content: `
 <div class="doc-head">
   <span class="app-badge"><span class="icon">${ICONS[a.slug]}</span>${a.name}</span>
@@ -163,3 +169,27 @@ ${a.body}
 
 write('favicon.svg', MARK.replace('aria-hidden="true"', 'xmlns="http://www.w3.org/2000/svg"').replaceAll('currentColor', '#211D18'));
 write('.nojekyll', '');
+
+write('404.html', page({
+  title: 'Nie znaleziono strony — Kimeria',
+  desc: 'Nie ma takiej strony.',
+  rel: '/',
+  content: `
+<section class="hero">
+  <h1>Nie ma takiej strony</h1>
+  <p>Adres mógł się zmienić. <a href="/">Wróć na stronę główną Kimerii</a>.</p>
+</section>`,
+}));
+
+const urls = ['', ...apps.map(a => `${a.slug}/prywatnosc/`)];
+if (DOMAIN) {
+  write('CNAME', DOMAIN + '\n');
+  write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${ORIGIN}/sitemap.xml\n`);
+  write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(u => `  <url><loc>${ORIGIN}/${u}</loc></url>`).join('\n')}
+</urlset>
+`);
+} else {
+  for (const f of ['CNAME', 'robots.txt', 'sitemap.xml']) fs.rmSync(path.join(root, f), { force: true });
+}
