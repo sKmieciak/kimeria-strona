@@ -6,7 +6,7 @@ const MAIL = 'seb.kmieciak@gmail.com';
 const PUBLISHER = 'Kmieciak Sebastian - SK Software';
 const UPDATED = '2 października 2026';
 // Własna domena (bez https://), np. 'kimeria.pl'. Pusta = brak pliku CNAME/sitemap.
-const DOMAIN = '';
+const DOMAIN = 'kimeria.pl';
 const ORIGIN = DOMAIN ? `https://${DOMAIN}` : '';
 
 const MARK = '<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><polygon points="32,8 56,32 32,56 8,32" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><polygon points="32,8 11.2,44 52.8,44" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="2.5"/></svg>';
