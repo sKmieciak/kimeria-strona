@@ -42,8 +42,31 @@ ${content}
 
 const apps = [
   {
-    slug: 'dobitka', play: '', cls: 'app-dobitka', name: 'Dobitka',
-    blurb: 'Piłkarska gra towarzyska. Odejmujecie gole wylosowanych zawodników i próbujecie zejść dokładnie do zera.',
+    slug: 'dobitka', play: '', cls: 'app-dobitka', name: 'Dobitka', updated: '8 października 2026',
+    blurb: 'Piłkarska gra towarzyska. Losujecie klub, wybieracie jego piłkarza i odejmujecie jego gole, próbując zejść dokładnie do zera.',
+    // Strona aplikacji (kimeria.pl/dobitka/), podana w Google Play jako strona internetowa.
+    landing: {
+      lead: 'Piłkarska gra imprezowa dla znajomych, oparta na zasadzie znanej z rzutek: zaczynasz z pulą punktów i musisz zejść dokładnie do zera.',
+      image: 'dobitka/grafika.png',
+      sections: [
+        ['Jak się gra', [
+          'Każda runda losuje klub, np. Liverpool, Celtic albo AC Milan.',
+          'Wybierasz piłkarza, który w nim grał. Jego bramki dla tego klubu odejmujesz od swojej puli.',
+          'Kto pierwszy zejdzie dokładnie do zera, wygrywa. Przestrzelisz? Ruch przepada.',
+        ]],
+        ['Trzy tryby', [
+          '<strong>Rywalizacyjny</strong>: każdy gra na własną pulę.',
+          '<strong>Kooperacyjny</strong>: wspólna pula, gracie razem.',
+          '<strong>Błyskawiczny</strong>: jedna runda na szybko.',
+        ]],
+        ['Dopasuj grę do wieczoru', [
+          'Cel punktowy, liczba rund i limit czasu na ruch.',
+          'Wybór lig i poziom klubów: tylko topowe, topowe i mniej znane albo wszystkie.',
+          'Ponad 1100 zawodników i legend z 29 klubów i 10 lig: od Premier League, La Ligi i Serie A po Ekstraklasę.',
+        ]],
+      ],
+      note: 'Gra działa bez internetu, bo baza zawodników jest wbudowana. Reklamy wyłączysz jednorazowym zakupem.',
+    },
     summary: [
       'Rozgrywka (gracze, wyniki rund, ustawienia meczu) zostaje <strong>tylko na Twoim urządzeniu</strong>. Nie ma konta, logowania ani własnego serwera.',
       'Baza zawodników i klubów jest dołączona do aplikacji i działa offline.',
@@ -51,7 +74,7 @@ const apps = [
       'Nie zbieramy danych osobowych do własnych celów i nikomu ich nie sprzedajemy.',
     ],
     body: `
-<section><h2>Kim jesteśmy</h2><p>Dobitka to piłkarska gra towarzyska na telefon, w której gracze na zmianę odejmują liczbę bramek strzelonych przez losowanego zawodnika, próbując zejść dokładnie do zera. Aplikację wydaje ${PUBLISHER} (marka Kimeria), który jest administratorem danych w rozumieniu tej polityki. Kontakt: ${mail}.</p></section>
+<section><h2>Kim jesteśmy</h2><p>Dobitka to piłkarska gra towarzyska na telefon, w której gracze na zmianę wybierają piłkarza z wylosowanego klubu i odejmują liczbę jego bramek, próbując zejść dokładnie do zera. Aplikację wydaje ${PUBLISHER} (marka Kimeria), który jest administratorem danych w rozumieniu tej polityki. Kontakt: ${mail}.</p></section>
 <section><h2>Gdzie przechowujemy Twoje dane</h2><p>Nazwy graczy, wybrany tryb, ligi i poziom trudności oraz przebieg rozgrywki zapisują się wyłącznie lokalnie na Twoim urządzeniu. Aplikacja nie ma konta użytkownika ani backendu, do którego wysyłałaby te dane. Baza zawodników i klubów jest wgrywana przy pierwszym uruchomieniu z pliku dołączonego do aplikacji, bez komunikacji z serwerem. Odinstalowanie aplikacji trwale usuwa dane rozgrywki.</p></section>
 <section><h2>Uprawnienia</h2><p>Aplikacja deklaruje uprawnienia <code>INTERNET</code> i <code>ACCESS_NETWORK_STATE</code>, potrzebne wyłącznie do wyświetlania reklam i obsługi zakupów (patrz niżej). Dobitka nie prosi o dostęp do lokalizacji, aparatu, mikrofonu ani kontaktów.</p></section>
 <section><h2>Reklamy (Google AdMob)</h2><p>Aplikacja korzysta z Google AdMob do wyświetlania reklam. AdMob może zbierać identyfikator reklamowy urządzenia i inne dane techniczne, żeby wyświetlać reklamy i mierzyć ich skuteczność, zgodnie z <a href="https://policies.google.com/privacy" rel="noopener">polityką prywatności Google</a>. Więcej o tym, jak Google wykorzystuje dane z aplikacji partnerów: <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">policies.google.com/technologies/partner-sites</a>. Zakup „Usuń reklamy” wyłącza reklamy w aplikacji.</p></section>
@@ -132,7 +155,7 @@ ${apps.map(a => `  <article class="card app ${a.cls}">
     <span class="icon">${ICONS[a.slug]}</span>
     <h2>${a.name}</h2>
     <p>${a.blurb}</p>
-    <div class="links"><a class="pill" href="${a.slug}/prywatnosc/">Polityka prywatności</a>${a.play ? `<a class="pill" href="${a.play}" rel="noopener">Google Play</a>` : '<span class="pill muted">Google Play: wkrótce</span>'}</div>
+    <div class="links">${a.landing ? `<a class="pill" href="${a.slug}/">O grze</a>` : ''}<a class="pill" href="${a.slug}/prywatnosc/">Polityka prywatności</a>${a.play ? `<a class="pill" href="${a.play}" rel="noopener">Google Play</a>` : '<span class="pill muted">Google Play: wkrótce</span>'}</div>
   </article>`).join('\n')}
 </div>
 <section class="section" id="kontakt">
@@ -156,13 +179,38 @@ for (const a of apps) {
 <div class="doc-head">
   <span class="app-badge"><span class="icon">${ICONS[a.slug]}</span>${a.name}</span>
   <h1>Polityka prywatności</h1>
-  <div class="updated">Ostatnia aktualizacja: ${UPDATED}</div>
+  <div class="updated">Ostatnia aktualizacja: ${a.updated || UPDATED}</div>
 </div>
 <main>
 <div class="card summary"><p class="label">W skrócie</p><ul>
 ${a.summary.map(s => `<li>${s}</li>`).join('\n')}
 </ul></div>
 ${a.body}
+</main>`,
+  }));
+}
+
+for (const a of apps.filter(a => a.landing)) {
+  const l = a.landing;
+  write(`${a.slug}/index.html`, page({
+    title: `${a.name} — ${a.blurb.split('.')[0]}`,
+    desc: l.lead,
+    rel: '../',
+    bodyClass: a.cls,
+    canonical: `${a.slug}/`,
+    content: `
+<div class="doc-head">
+  <span class="app-badge"><span class="icon">${ICONS[a.slug]}</span>${a.name}</span>
+  <h1>${a.blurb.split('.')[0]}</h1>
+  <p class="lead">${l.lead}</p>
+</div>
+<main>
+${l.image ? `<img class="card shot" src="../${l.image}" alt="${a.name}" width="1024" height="500">` : ''}
+${l.sections.map(([h, items]) => `<section><h2>${h}</h2><ul>
+${items.map(i => `<li>${i}</li>`).join('\n')}
+</ul></section>`).join('\n')}
+<p>${l.note}</p>
+<div class="links">${a.play ? `<a class="pill" href="${a.play}" rel="noopener">Pobierz z Google Play</a>` : '<span class="pill muted">Google Play: wkrótce</span>'}<a class="pill" href="prywatnosc/">Polityka prywatności</a></div>
 </main>`,
   }));
 }
@@ -181,7 +229,7 @@ write('404.html', page({
 </section>`,
 }));
 
-const urls = ['', ...apps.map(a => `${a.slug}/prywatnosc/`)];
+const urls = ['', ...apps.filter(a => a.landing).map(a => `${a.slug}/`), ...apps.map(a => `${a.slug}/prywatnosc/`)];
 if (DOMAIN) {
   write('CNAME', DOMAIN + '\n');
   write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${ORIGIN}/sitemap.xml\n`);
