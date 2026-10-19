@@ -16,6 +16,19 @@ const ICONS = {
   wykonbilans: '<svg viewBox="0 0 456 456" aria-hidden="true"><path d="M140 110V316H346" fill="none" stroke="#fff" stroke-width="40" stroke-linejoin="round" stroke-linecap="round"/><path d="M190 160V266H296" fill="none" stroke="#fff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/></svg>',
 };
 const mail = `<a href="mailto:${MAIL}">${MAIL}</a>`;
+// Identyfikator wydawcy AdMob (konto Kimeria) — do app-ads.txt.
+const ADMOB_PUB = 'pub-6811060796841200';
+
+// Wspólna sekcja RODO (art. 13) dla aplikacji z AdMob i Google Play.
+const rodo = (a) => `
+<section><h2>Podstawy prawne, odbiorcy i okresy przechowywania</h2><div class="card table">
+<div class="row"><div class="k">Reklamy</div><div>Reklamy spersonalizowane wyświetlamy tylko na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO), o którą pyta formularz Google przy pierwszym uruchomieniu. Reklamy niespersonalizowane, ograniczanie częstotliwości i ochrona przed nadużyciami opierają się na naszym prawnie uzasadnionym interesie, czyli finansowaniu darmowej wersji (art. 6 ust. 1 lit. f). Zgodę zmienisz lub cofniesz w każdej chwili w aplikacji: Ustawienia → „Ustawienia prywatności”. Cofnięcie zgody nie wpływa na zgodność z prawem wcześniejszego przetwarzania.</div></div>
+<div class="row"><div class="k">Zakupy</div><div>Obsługa ${a.zakup} w ramach umowy z Tobą (art. 6 ust. 1 lit. b) i obowiązków podatkowych (lit. c). Dane płatnicze zbiera i przechowuje Google.</div></div>
+<div class="row"><div class="k">Kontakt e-mail</div><div>Odpowiadamy na Twoje wiadomości w naszym prawnie uzasadnionym interesie (art. 6 ust. 1 lit. f). Korespondencję przechowujemy do zakończenia sprawy, nie dłużej niż 12 miesięcy.</div></div>
+<div class="row"><div class="k">Odbiorcy</div><div>Google Ireland Limited (Google AdMob, Google Play)${a.odbiorcy || ''}. Google może przekazywać dane do USA; podstawą są decyzja Komisji Europejskiej w sprawie EU-US Data Privacy Framework oraz standardowe klauzule umowne.</div></div>
+<div class="row"><div class="k">Kopia zapasowa Androida</div><div>Jeśli masz w telefonie włączoną kopię zapasową Google, Android może automatycznie zapisać dane aplikacji na Twoim koncie Google (Dysk Google). Taka kopia jest zaszyfrowana i dostępna tylko dla Ciebie, my jej nie widzimy. Wyłączysz ją w ustawieniach Androida (System → Kopia zapasowa).</div></div>
+</div>
+<p>Masz prawo dostępu do swoich danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, przenoszenia, sprzeciwu wobec przetwarzania opartego na prawnie uzasadnionym interesie oraz cofnięcia zgody. W sprawie danych przetwarzanych przez Google (identyfikator reklamowy, zakupy) najszybciej skorzystasz z narzędzi Google, ale możesz też napisać do nas: ${mail}. Przysługuje Ci skarga do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa). Podanie danych jest dobrowolne. Nie podejmujemy wobec Ciebie zautomatyzowanych decyzji; dobór reklam przez Google nie wywołuje skutków prawnych.</p></section>`;
 
 const page = ({ title, desc, rel, bodyClass = '', content, canonical }) => `<!doctype html>
 <html lang="pl">
@@ -42,7 +55,8 @@ ${content}
 
 const apps = [
   {
-    slug: 'dobitka', play: '', cls: 'app-dobitka', name: 'Dobitka', updated: '8 października 2026',
+    slug: 'dobitka', play: 'https://play.google.com/store/apps/details?id=com.dobitka.app', cls: 'app-dobitka', name: 'Dobitka', updated: '19 października 2026',
+    zakup: 'jednorazowego zakupu „Usuń reklamy”',
     blurb: 'Piłkarska gra towarzyska. Losujecie klub, wybieracie jego piłkarza i odejmujecie jego gole, próbując zejść dokładnie do zera.',
     // Strona aplikacji (kimeria.pl/dobitka/), podana w Google Play jako strona internetowa.
     landing: {
@@ -83,53 +97,54 @@ const apps = [
 <section><h2>Zmiany tej polityki</h2><p>Jeśli zakres funkcji aplikacji się zmieni, zaktualizujemy tę stronę i datę na górze dokumentu.</p></section>`,
   },
   {
-    slug: 'agrobilans', play: '', cls: 'app-agro', name: 'AgroBilans',
+    slug: 'agrobilans', play: '', cls: 'app-agro', name: 'AgroBilans', updated: '19 października 2026',
+    zakup: 'subskrypcji Premium',
+    odbiorcy: '; dla opcjonalnej Giełdy ogłoszeń także Supabase (serwery w Unii Europejskiej)',
     blurb: 'Rachunkowość gospodarstwa warzywnego: pola, uprawy, zbiory, sprzedaż, koszty i kontrahenci.',
     summary: [
       'Dane gospodarstwa zostają <strong>na Twoim telefonie</strong>.',
       'Jedyny wyjątek to opcjonalna Giełda ogłoszeń, która z założenia jest publiczna.',
-      'Lokalizacja tylko za Twoją zgodą, do pomiaru pola.',
-      'Niczego nie sprzedajemy ani nie udostępniamy poza Giełdą.',
-      'Obecnie brak reklam i analityki.',
+      'Lokalizacja tylko za Twoją zgodą i tylko przy otwartym ekranie: pomiar pola, rozpoznanie pola, trasa zabiegu.',
+      'Wersja darmowa wyświetla banery Google AdMob. Subskrypcja Premium (Google Play) wyłącza reklamy.',
+      'Nie mamy własnej analityki i nie sprzedajemy Twoich danych.',
     ],
     body: `
-<section><h2>Kim jesteśmy</h2><p>AgroBilans to aplikacja do prowadzenia rachunkowości gospodarstwa (pola, uprawy, zbiory, sprzedaże, koszty, kontrahenci) dla drobnych producentów warzyw i owoców. Aplikację wydaje ${PUBLISHER} (marka Kimeria), który jest administratorem danych w rozumieniu RODO. Kontakt: ${mail}.</p></section>
-<section><h2>Gdzie przechowujemy Twoje dane</h2><p>Wszystko, co wpisujesz do AgroBilansu (pola, uprawy, sprzedaże, koszty, dane kontrahentów, zbiory, dziennik zabiegów), trafia wyłącznie do lokalnej bazy danych na Twoim telefonie. Aplikacja nie wysyła tych danych na serwer, nie synchronizuje ich w chmurze i nie udostępnia ich nam ani firmom trzecim. Po odinstalowaniu aplikacji lub wyczyszczeniu jej danych informacje znikają; bez kopii zapasowej nie da się ich odzyskać.</p><p><strong>Jedyny wyjątek to opcjonalna Giełda ogłoszeń</strong>, opisana niżej.</p></section>
-<section><h2>Giełda ogłoszeń (opcjonalna)</h2><p>Giełda (w aplikacji „🧺 Giełda” oraz na stronie Giełda Plonów) pozwala wystawiać i przeglądać ogłoszenia sprzedaży płodów rolnych widoczne dla innych. Wymaga to wspólnego miejsca na dane, więc to jedyny element AgroBilansu korzystający z zewnętrznego serwera (Supabase, serwery w Unii Europejskiej). Z całej reszty aplikacji korzystasz bez konta. Konto (e-mail i hasło) zakładasz dopiero, gdy chcesz wystawić ogłoszenie.</p>
+<section><h2>Kim jesteśmy</h2><p>AgroBilans to aplikacja do prowadzenia rachunkowości gospodarstwa (pola, uprawy, zbiory, sprzedaże, koszty, kontrahenci, dziennik zabiegów) dla drobnych producentów warzyw i owoców. Aplikację wydaje ${PUBLISHER} (marka Kimeria), który jest administratorem danych w rozumieniu RODO. Kontakt: ${mail}.</p></section>
+<section><h2>Gdzie przechowujemy Twoje dane</h2><p>Wszystko, co wpisujesz do AgroBilansu, trafia wyłącznie do lokalnej bazy danych na Twoim telefonie. Aplikacja nie wysyła tych danych na nasz serwer, nie synchronizuje ich w chmurze i nie udostępnia ich nam ani firmom trzecim. Po odinstalowaniu aplikacji lub wyczyszczeniu jej danych informacje znikają; bez kopii zapasowej nie da się ich odzyskać.</p><p><strong>Jedyny wyjątek to opcjonalna Giełda ogłoszeń</strong>, opisana niżej.</p></section>
+<section><h2>Giełda ogłoszeń (opcjonalna)</h2><p>Giełda pozwala wystawiać i przeglądać ogłoszenia sprzedaży płodów rolnych widoczne dla innych. Wymaga to wspólnego miejsca na dane, więc korzysta z zewnętrznego serwera (Supabase, serwery w Unii Europejskiej). Z całej reszty aplikacji korzystasz bez konta. Konto (e-mail i hasło) zakładasz dopiero, gdy chcesz wystawić ogłoszenie. Jeśli Giełda nie jest widoczna w Twojej wersji aplikacji, żadne dane nie trafiają na ten serwer.</p>
 <div class="card table">
 <div class="row"><div class="k">Co trafia do Giełdy</div><div>Adres e-mail konta, treść ogłoszenia, którą sam wpisujesz (rodzaj płodu, ilość, cena, opis, województwo, opcjonalnie gmina i nazwa gospodarstwa), oraz numer telefonu kontaktowego, który sam podajesz.</div></div>
 <div class="row"><div class="k">Kto to widzi</div><div>Treść aktywnego ogłoszenia, łącznie z numerem telefonu, widzi każdy odwiedzający Giełdę, także bez logowania. Adres e-mail konta nie jest nigdzie publicznie pokazywany.</div></div>
-<div class="row"><div class="k">Jak długo</div><div>Ogłoszenie jest widoczne 30 dni albo do oznaczenia jako sprzedane lub usunięcia, zależnie od tego, co nastąpi wcześniej. Własne ogłoszenie usuniesz w dowolnym momencie.</div></div>
-</div><p>Dane Giełdy nie są łączone z prywatną bazą Twojego gospodarstwa. To dwa osobne magazyny danych.</p></section>
+<div class="row"><div class="k">Jak długo</div><div>Ogłoszenie jest widoczne 30 dni albo do oznaczenia jako sprzedane lub usunięcia, zależnie od tego, co nastąpi wcześniej. Konto usuniemy na Twoją prośbę wysłaną na ${mail}.</div></div>
+</div><p>Dane Giełdy nie są łączone z prywatną bazą Twojego gospodarstwa. To dwa osobne magazyny danych. Podstawą przetwarzania danych Giełdy jest umowa o korzystanie z tej funkcji (art. 6 ust. 1 lit. b RODO).</p></section>
 <section><h2>Uprawnienia</h2><div class="card table">
-<div class="row"><div class="k">Lokalizacja</div><div>Tylko w funkcji Premium „Pomiar granic pola”, gdy sam ją uruchomisz. Aplikacja odczytuje wtedy pozycję GPS, żeby zapisać obrys i powierzchnię pola w lokalnej bazie. Poza tą funkcją lokalizacja nie jest sprawdzana.</div></div>
-<div class="row"><div class="k">Pliki</div><div>Eksport kopii zapasowej lub raportu CSV oraz import kopii, zawsze z Twojej inicjatywy.</div></div>
-<div class="row"><div class="k">Internet</div><div>Wyłącznie dla opcjonalnej Giełdy ogłoszeń. Reszta aplikacji nie łączy się z żadnym serwerem.</div></div>
+<div class="row"><div class="k">Lokalizacja</div><div>Tylko w funkcjach Premium, które sam uruchamiasz: pomiar granic pola, rozpoznanie, na którym polu stoisz, oraz zapis trasy przejazdu przy zabiegu (pozycja co kilka sekund, tylko dopóki ekran trasy jest otwarty; aplikacja nie używa lokalizacji w tle). Wyniki trafiają do lokalnej bazy. Trasę możesz sam udostępnić jako plik GPX. Poza tymi funkcjami lokalizacja nie jest sprawdzana, a reklamy nie mają do niej dostępu.</div></div>
+<div class="row"><div class="k">Pliki</div><div>Aplikacja nie prosi o dostęp do pamięci telefonu. Eksport kopii zapasowej, raportów CSV i PDF, ewidencji zabiegów i trasy GPX przekazuje plik do systemowego okna udostępniania, a import kopii odbywa się przez systemowy wybór pliku, zawsze z Twojej inicjatywy.</div></div>
+<div class="row"><div class="k">Internet</div><div>Banery Google AdMob w wersji darmowej, obsługa subskrypcji przez Google Play i opcjonalna Giełda. Dane gospodarstwa nigdy nie są wysyłane przez internet.</div></div>
 </div></section>
-<section><h2>Kopia zapasowa</h2><p>Funkcja „Kopia zapasowa” w Ustawieniach tworzy plik z pełną zawartością bazy i zapisuje go tam, gdzie wskażesz (np. w pamięci telefonu albo na Twoim dysku w chmurze przez systemowe okno udostępniania). Ten plik nie trafia do nas.</p></section>
-<section><h2>Reklamy i analityka</h2><p>Obecna wersja nie wyświetla reklam i nie zawiera narzędzi analitycznych ani śledzących. Jeśli to się zmieni, zaktualizujemy tę politykę przed wprowadzeniem zmiany i opiszemy, jaki dostawca jest używany i jakie dane przetwarza.</p></section>
-<section><h2>Zakupy w aplikacji (Premium)</h2><p>Premium odblokowuje się przez zakupy Google Play. AgroBilans nie widzi ani nie przechowuje Twoich danych płatniczych; obsługuje je wyłącznie Google.</p></section>
-<section><h2>Twoje prawa</h2><p>Dane gospodarstwa nie opuszczają Twojego urządzenia, więc masz nad nimi pełną kontrolę: możesz je wyeksportować, usunąć pojedyncze wpisy albo odinstalować aplikację. W sprawie danych Giełdy (dostęp, poprawienie, usunięcie konta) napisz na ${mail}. Przysługuje Ci też prawo skargi do Prezesa UODO.</p></section>
-<section><h2>Zmiany tej polityki</h2><p>Jeśli zmienimy sposób przetwarzania danych, np. wprowadzając reklamy, synchronizację w chmurze lub analitykę, zaktualizujemy ten dokument i datę na górze przed wprowadzeniem zmiany do aplikacji.</p></section>`,
+<section><h2>Kopia zapasowa</h2><p>Funkcja „Kopia zapasowa” w Ustawieniach tworzy plik z pełną zawartością bazy i zapisuje go tam, gdzie wskażesz. Ten plik nie trafia do nas.</p></section>
+<section><h2>Reklamy (Google AdMob)</h2><p>W wersji darmowej aplikacja wyświetla banery Google AdMob (nie ma ich w formularzach dodawania i edycji). AdMob może zbierać identyfikator reklamowy urządzenia, przybliżoną lokalizację wyznaczoną z adresu IP, informacje o interakcjach z reklamami i dane diagnostyczne, żeby wyświetlać reklamy, mierzyć ich skuteczność i zapobiegać nadużyciom, zgodnie z <a href="https://policies.google.com/privacy" rel="noopener">polityką prywatności Google</a> (więcej: <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">jak Google wykorzystuje dane z aplikacji partnerów</a>). Przy pierwszym uruchomieniu w Europejskim Obszarze Gospodarczym aplikacja pokazuje formularz zgody Google, w którym decydujesz, czy reklamy mogą być spersonalizowane. Reklamy nie mają dostępu do danych wpisanych w aplikacji. Przy aktywnym Premium baner w ogóle nie jest tworzony. Aplikacja nie zawiera własnych narzędzi analitycznych ani raportowania błędów.</p></section>
+<section><h2>Zakupy w aplikacji (Premium)</h2><p>AgroBilans Premium to miesięczna subskrypcja obsługiwana przez Google Play Billing. Usuwa reklamy i odblokowuje funkcje Premium (m.in. eksport ewidencji zabiegów, funkcje GPS, zaawansowaną analitykę). Cenę widzisz w aplikacji i w Google Play przed zakupem. Płatność przebiega w całości po stronie Google; aplikacja zapisuje lokalnie tylko informację, czy subskrypcja jest aktywna. Subskrypcję anulujesz w Google Play (Płatności i subskrypcje → Subskrypcje). Po jej wygaśnięciu wszystkie Twoje dane zostają na telefonie bez zmian.</p></section>
+<section><h2>Zmiany tej polityki</h2><p>Jeśli zmienimy sposób przetwarzania danych, np. wprowadzając synchronizację w chmurze, nowego dostawcę reklam lub analitykę, zaktualizujemy ten dokument i datę na górze przed wprowadzeniem zmiany do aplikacji.</p></section>`,
   },
   {
-    slug: 'wykonbilans', play: '', cls: 'app-wykon', name: 'WykonBilans',
+    slug: 'wykonbilans', play: '', cls: 'app-wykon', name: 'WykonBilans', updated: '19 października 2026',
+    zakup: 'subskrypcji Premium',
     blurb: 'Dla ekip wykończeniowych: wyceny, cennik materiałów, rzuty pomieszczeń i rozliczenia zleceń.',
     summary: [
       'Klienci, zlecenia, wyceny, cennik, koszty, płatności i rzuty pomieszczeń zostają <strong>tylko na Twoim telefonie</strong>.',
-      'Nie zbieramy danych osobowych do własnych celów i nie przekazujemy ich firmom trzecim.',
-      'Aplikacja nie zawiera obecnie reklam ani narzędzi analitycznych.',
-      'Kopia zapasowa to funkcja lokalna: plik trafia tam, gdzie sam go wyślesz, nie do nas.',
+      'Wersja darmowa wyświetla banery Google AdMob. Subskrypcja Premium (Google Play) wyłącza reklamy.',
+      'Nie mamy własnej analityki i nie przekazujemy Twoich danych firmom trzecim.',
+      'Kopia zapasowa i wycena w PDF to funkcje lokalne: plik trafia tam, gdzie sam go wyślesz, nie do nas.',
     ],
     body: `
-<section><h2>Kim jesteśmy</h2><p>WykonBilans to aplikacja dla ekip i firm wykończeniowych: wyceny, cennik materiałów i usług, koszty oraz rozliczenia zleceń. Aplikację wydaje ${PUBLISHER} (marka Kimeria), który jest administratorem danych w rozumieniu tej polityki. Kontakt: ${mail}.</p></section>
-<section><h2>Gdzie przechowujemy Twoje dane</h2><p>Wszystkie dane wpisane do aplikacji zapisują się wyłącznie lokalnie, w bazie na Twoim urządzeniu. Aplikacja nie wysyła ich na żaden serwer i nie ma konta użytkownika. Odinstalowanie aplikacji lub wyczyszczenie jej danych trwale je usuwa, chyba że wcześniej wykonasz kopię zapasową.</p></section>
-<section><h2>Uprawnienia</h2><p>Aplikacja deklaruje uprawnienia <code>INTERNET</code> i <code>ACCESS_NETWORK_STATE</code>, ale obecnie nie wykonuje żadnych połączeń sieciowych. Nie prosi o dostęp do lokalizacji, aparatu, mikrofonu ani kontaktów. Jeśli pojawi się funkcja, która tego wymaga, zaktualizujemy tę politykę z wyprzedzeniem.</p></section>
-<section><h2>Kopia zapasowa</h2><p>Funkcja „Kopia zapasowa” w Ustawieniach tworzy pełną kopię bazy i przekazuje ją do systemowego okna udostępniania. Ty decydujesz, gdzie plik trafi (dysk w chmurze, e-mail, zapis lokalny). Przywrócenie kopii nadpisuje bieżące dane dopiero po Twoim potwierdzeniu. Żaden z tych plików nie przechodzi przez nasze serwery.</p></section>
-<section><h2>Reklamy i analityka</h2><p>Aplikacja nie zawiera reklam, narzędzi analitycznych ani bibliotek śledzących. Jeśli to się zmieni, zaktualizujemy politykę i opiszemy, jakie dane są wtedy przetwarzane i przez kogo.</p></section>
-<section><h2>Zakupy w aplikacji (Premium)</h2><p>Płatności za Premium nie są jeszcze uruchomione. Gdy pojawi się Google Play Billing, opiszemy tu dane przetwarzane w tym procesie przez Google. Danych płatniczych nigdy nie przechowujemy.</p></section>
-<section><h2>Twoje prawa</h2><p>Dane nie opuszczają Twojego urządzenia, chyba że sam wyślesz plik kopii zapasowej, więc masz nad nimi pełną kontrolę: możesz je wyeksportować, usunąć pojedyncze wpisy albo odinstalować aplikację. Pytania: ${mail}.</p></section>
-<section><h2>Zmiany tej polityki</h2><p>Jeśli zakres funkcji się zmieni (reklamy, płatności, funkcje wymagające internetu), zaktualizujemy tę stronę i datę na górze dokumentu.</p></section>`,
+<section><h2>Kim jesteśmy</h2><p>WykonBilans to aplikacja dla ekip i firm wykończeniowych: wyceny, cennik materiałów i usług, koszty oraz rozliczenia zleceń. Aplikację wydaje ${PUBLISHER} (marka Kimeria), który jest administratorem danych w rozumieniu RODO. Kontakt: ${mail}.</p></section>
+<section><h2>Gdzie przechowujemy Twoje dane</h2><p>Wszystkie dane wpisane do aplikacji, także dane Twoich klientów, zapisują się wyłącznie lokalnie, w bazie na Twoim urządzeniu. Aplikacja nie wysyła ich na żaden nasz serwer i nie ma konta użytkownika. Odinstalowanie aplikacji lub wyczyszczenie jej danych trwale je usuwa, chyba że wcześniej wykonasz kopię zapasową. Za dane swoich klientów, które wpisujesz do aplikacji, odpowiadasz Ty jako ich administrator; my nie mamy do nich dostępu.</p></section>
+<section><h2>Uprawnienia</h2><p>Aplikacja deklaruje uprawnienia <code>INTERNET</code> i <code>ACCESS_NETWORK_STATE</code>, potrzebne wyłącznie do wyświetlania reklam i obsługi subskrypcji Premium. Twoje dane nie są wysyłane przez internet. WykonBilans nie prosi o dostęp do lokalizacji, aparatu, mikrofonu ani kontaktów.</p></section>
+<section><h2>Kopia zapasowa i wycena w PDF</h2><p>Funkcja „Kopia zapasowa” tworzy pełną kopię bazy i przekazuje ją do systemowego okna udostępniania. Eksport wyceny do PDF (3 pierwsze wyceny za darmo, potem w Premium) tworzy plik w pamięci aplikacji i również przekazuje go do okna udostępniania. Ty decydujesz, gdzie plik trafi. Żaden z tych plików nie przechodzi przez nasze serwery.</p></section>
+<section><h2>Reklamy (Google AdMob)</h2><p>W wersji darmowej aplikacja wyświetla banery Google AdMob. AdMob może zbierać identyfikator reklamowy urządzenia, przybliżoną lokalizację wyznaczoną z adresu IP, informacje o interakcjach z reklamami i dane diagnostyczne, żeby wyświetlać reklamy, mierzyć ich skuteczność i zapobiegać nadużyciom, zgodnie z <a href="https://policies.google.com/privacy" rel="noopener">polityką prywatności Google</a> (więcej: <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">jak Google wykorzystuje dane z aplikacji partnerów</a>). Przy pierwszym uruchomieniu w Europejskim Obszarze Gospodarczym aplikacja pokazuje formularz zgody Google, w którym decydujesz, czy reklamy mogą być spersonalizowane. Reklamy nie mają dostępu do danych wpisanych w aplikacji. Przy aktywnym Premium baner w ogóle nie jest tworzony. Aplikacja nie zawiera własnych narzędzi analitycznych ani raportowania błędów.</p></section>
+<section><h2>Zakupy w aplikacji (Premium)</h2><p>WykonBilans Premium to miesięczna subskrypcja obsługiwana przez Google Play Billing: wersja bez reklam i eksport wycen do PDF bez limitu i bez stopki „wersja próbna”. Cenę widzisz w aplikacji i w Google Play przed zakupem. Płatność przebiega w całości po stronie Google; aplikacja zapisuje lokalnie tylko informację, czy subskrypcja jest aktywna. Subskrypcję anulujesz w Google Play (Płatności i subskrypcje → Subskrypcje). Po jej wygaśnięciu wszystkie Twoje dane zostają na telefonie bez zmian.</p></section>
+<section><h2>Zmiany tej polityki</h2><p>Jeśli zakres funkcji się zmieni (nowy dostawca reklam, funkcje wymagające internetu), zaktualizujemy tę stronę i datę na górze dokumentu przed wprowadzeniem zmiany do aplikacji.</p></section>`,
   },
 ];
 
@@ -186,6 +201,7 @@ for (const a of apps) {
 ${a.summary.map(s => `<li>${s}</li>`).join('\n')}
 </ul></div>
 ${a.body}
+${rodo(a)}
 </main>`,
   }));
 }
@@ -217,6 +233,8 @@ ${items.map(i => `<li>${i}</li>`).join('\n')}
 
 write('favicon.svg', MARK.replace('aria-hidden="true"', 'xmlns="http://www.w3.org/2000/svg"').replaceAll('currentColor', '#211D18'));
 write('.nojekyll', '');
+write('app-ads.txt', `google.com, ${ADMOB_PUB}, DIRECT, f08c47fec0942fa0
+`);
 
 write('404.html', page({
   title: 'Nie znaleziono strony — Kimeria',
