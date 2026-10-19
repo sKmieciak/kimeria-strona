@@ -57,7 +57,7 @@ const apps = [
   {
     slug: 'dobitka', play: 'https://play.google.com/store/apps/details?id=com.dobitka.app', cls: 'app-dobitka', name: 'Dobitka', updated: '19 października 2026',
     zakup: 'jednorazowego zakupu „Usuń reklamy”',
-    blurb: 'Piłkarska gra towarzyska. Losujecie klub, wybieracie jego piłkarza i odejmujecie jego gole, próbując zejść dokładnie do zera.',
+    blurb: 'Piłkarska gra towarzyska. Losujecie klub albo reprezentację, wybieracie piłkarza i odejmujecie jego gole, próbując zejść dokładnie do zera.',
     // Strona aplikacji (kimeria.pl/dobitka/), podana w Google Play jako strona internetowa.
     landing: {
       lead: 'Piłkarska gra imprezowa dla znajomych, oparta na zasadzie znanej z rzutek: zaczynasz z pulą punktów i musisz zejść dokładnie do zera.',
@@ -73,10 +73,15 @@ const apps = [
           '<strong>Kooperacyjny</strong>: wspólna pula, gracie razem.',
           '<strong>Błyskawiczny</strong>: jedna runda na szybko.',
         ]],
+        ['Które gole liczymy', [
+          '<strong>Wszystkie</strong>: liga, puchary krajowe i europejskie razem.',
+          '<strong>Liga</strong>, <strong>puchary krajowe</strong> albo <strong>puchary europejskie</strong> osobno.',
+          '<strong>Kadra</strong>: losujemy reprezentację i liczą się gole w drużynie narodowej.',
+        ]],
         ['Dopasuj grę do wieczoru', [
           'Cel punktowy, liczba rund i limit czasu na ruch.',
           'Wybór lig i poziom klubów: tylko topowe, topowe i mniej znane albo wszystkie.',
-          'Ponad 1100 zawodników i legend z 29 klubów i 10 lig: od Premier League, La Ligi i Serie A po Ekstraklasę.',
+          'Prawie 17 tysięcy piłkarzy z 61 klubów z 10 lig i 33 reprezentacji: od Premier League, La Ligi i Serie A po całą Ekstraklasę.',
         ]],
       ],
       note: 'Gra działa bez internetu, bo baza zawodników jest wbudowana. Reklamy wyłączysz jednorazowym zakupem.',
