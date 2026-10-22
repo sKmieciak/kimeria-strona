@@ -55,7 +55,7 @@ ${content}
 
 const apps = [
   {
-    slug: 'dobitka', play: 'https://play.google.com/store/apps/details?id=com.dobitka.app', cls: 'app-dobitka', name: 'Dobitka', updated: '19 października 2026',
+    slug: 'dobitka', play: 'https://play.google.com/store/apps/details?id=com.dobitka.app', cls: 'app-dobitka', name: 'Dobitka', updated: '22 października 2026',
     zakup: 'jednorazowego zakupu „Usuń reklamy”',
     blurb: 'Piłkarska gra towarzyska. Losujecie klub albo reprezentację, wybieracie piłkarza i odejmujecie jego gole, próbując zejść dokładnie do zera.',
     // Strona aplikacji (kimeria.pl/dobitka/), podana w Google Play jako strona internetowa.
@@ -94,8 +94,9 @@ const apps = [
     ],
     body: `
 <section><h2>Kim jesteśmy</h2><p>Dobitka to piłkarska gra towarzyska na telefon, w której gracze na zmianę wybierają piłkarza z wylosowanego klubu i odejmują liczbę jego bramek, próbując zejść dokładnie do zera. Aplikację wydaje ${PUBLISHER} (marka Kimeria), który jest administratorem danych w rozumieniu tej polityki. Kontakt: ${mail}.</p></section>
-<section><h2>Gdzie przechowujemy Twoje dane</h2><p>Nazwy graczy, wybrany tryb, ligi i poziom trudności oraz przebieg rozgrywki zapisują się wyłącznie lokalnie na Twoim urządzeniu. Aplikacja nie ma konta użytkownika ani backendu, do którego wysyłałaby te dane. Baza zawodników i klubów jest wgrywana przy pierwszym uruchomieniu z pliku dołączonego do aplikacji, bez komunikacji z serwerem. Odinstalowanie aplikacji trwale usuwa dane rozgrywki.</p></section>
-<section><h2>Uprawnienia</h2><p>Aplikacja deklaruje uprawnienia <code>INTERNET</code> i <code>ACCESS_NETWORK_STATE</code>, potrzebne wyłącznie do wyświetlania reklam i obsługi zakupów (patrz niżej). Dobitka nie prosi o dostęp do lokalizacji, aparatu, mikrofonu ani kontaktów.</p></section>
+<section><h2>Gdzie przechowujemy Twoje dane</h2><p>Nazwy graczy, wybrany tryb, ligi i poziom trudności oraz przebieg rozgrywki zapisują się wyłącznie lokalnie na Twoim urządzeniu. Aplikacja nie ma konta użytkownika ani backendu, do którego wysyłałaby te dane. Baza zawodników i klubów jest wgrywana przy pierwszym uruchomieniu z pliku dołączonego do aplikacji, bez komunikacji z serwerem. Odinstalowanie aplikacji trwale usuwa dane rozgrywki.</p><p>Funkcja „Udostępnij wynik” wysyła tekst z imionami graczy tylko do aplikacji, którą sam wybierzesz w systemowym oknie udostępniania. Kimeria tego tekstu nie otrzymuje.</p></section>
+<section><h2>Wiek użytkowników</h2><p>Aplikacja jest przeznaczona dla osób od 16 lat i nie jest skierowana do dzieci.</p></section>
+<section><h2>Uprawnienia</h2><p>Aplikacja deklaruje uprawnienia <code>INTERNET</code> i <code>ACCESS_NETWORK_STATE</code>, potrzebne wyłącznie do wyświetlania reklam i obsługi zakupów (patrz niżej), oraz <code>VIBRATE</code> do krótkich wibracji towarzyszących animacjom w grze. Dobitka nie prosi o dostęp do lokalizacji, aparatu, mikrofonu ani kontaktów.</p></section>
 <section><h2>Reklamy (Google AdMob)</h2><p>Aplikacja korzysta z Google AdMob do wyświetlania reklam. AdMob może zbierać identyfikator reklamowy urządzenia i inne dane techniczne, żeby wyświetlać reklamy i mierzyć ich skuteczność, zgodnie z <a href="https://policies.google.com/privacy" rel="noopener">polityką prywatności Google</a>. Więcej o tym, jak Google wykorzystuje dane z aplikacji partnerów: <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">policies.google.com/technologies/partner-sites</a>. Zakup „Usuń reklamy” wyłącza reklamy w aplikacji.</p></section>
 <section><h2>Zakupy w aplikacji</h2><p>Dobitka oferuje jeden jednorazowy zakup „Usuń reklamy”, obsługiwany przez Google Play Billing. Płatność (dane karty, historia zakupów) przebiega w całości po stronie Google. Aplikacja przechowuje lokalnie tylko informację, czy zakup został dokonany.</p></section>
 <section><h2>Twoje prawa</h2><p>Dane rozgrywki nie opuszczają Twojego urządzenia. Możesz je usunąć w każdej chwili, odinstalowując aplikację lub czyszcząc jej dane w ustawieniach Androida. Pytania dotyczące tej polityki, także reklam AdMob i zakupów Google Play: ${mail}.</p></section>
